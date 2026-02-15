@@ -3,43 +3,33 @@ kind: StatefulSet
 metadata:
   name: bloodapp-statefulset
 spec:
-  serviceName: "bloodapp-service"
+  serviceName: bloodapp-service
   replicas: 1
   selector:
     matchLabels:
-      app: bloodapp-db
+      app: bloodapp
   template:
     metadata:
       labels:
-        app: bloodapp-db
+        app: bloodapp
     spec:
       containers:
-        - name: bloodapp-container
+        - name: bloodapp-db
           image: kommanatejaswini/bloodyapp:dbimage
+
           ports:
-            - containerPort: 3306
-          envFrom:
-            - secretRef:
-                name: secret
-            - configMapRef:
-                name: cm-1
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "500m"
-              memory: "256Mi"
+            - containerPort: 80
+
           volumeMounts:
-            - name: mysql-persistent-storage
-              mountPath: /var/lib/mysql
+            - name: mysql-persistant-storage
+              mountPath: /usr/share/nginx/html
+
   volumeClaimTemplates:
     - metadata:
-        name: mysql-persistent-storage
+        name: mysql-persistant-storage
       spec:
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
             storage: 1Gi
-
