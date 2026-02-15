@@ -3,9 +3,8 @@ kind: StatefulSet
 metadata:
   name: bloodapp-statefulset
 spec:
-  serviceName: bloodapp-service
+  serviceName: bloodapp-headless
   replicas: 1
-  spec:
   selector:
     matchLabels:
       app: bloodapp-db
@@ -19,7 +18,21 @@ spec:
           image: kommanatejaswini/bloodyapp:dbimage
 
           ports:
-            - containerPort: 80
+            - containerPort: 3306
+
+          envFrom:
+            - configMapRef:
+                name: db-config
+            - secretRef:
+                name: db-secret
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: 128Mi
+            limits:
+              cpu: "500m"
+              memory: 256Mi
 
           volumeMounts:
             - name: mysql-persistant-storage
