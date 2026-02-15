@@ -5,9 +5,8 @@ metadata:
 spec:
   clusterIP: None
   selector:
-    app: bloodapp
+    app: bloodapp-db
   ports:
     - protocol: TCP
       port: 3306
       targetPort: 3306
-
