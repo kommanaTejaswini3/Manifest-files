@@ -5,13 +5,14 @@ metadata:
 spec:
   serviceName: bloodapp-service
   replicas: 1
+  spec:
   selector:
     matchLabels:
-      app: bloodapp
+      app: bloodapp-db
   template:
     metadata:
       labels:
-        app: bloodapp
+        app: bloodapp-db
     spec:
       containers:
         - name: bloodapp-db
